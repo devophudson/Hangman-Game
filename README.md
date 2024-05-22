@@ -1,102 +1,95 @@
-Hangman Game README
-Overview
-This is a simple Hangman game implemented in Python. The player needs to guess the letters of a randomly chosen word. The player has a limited number of incorrect guesses (lives). The game ends when the player either guesses the word correctly or runs out of lives.
-
-Files
-Main Script
-The main game logic is contained in this script.
-
-hangman_words.py
-This file contains a list of words (word_list) that the game will randomly choose from.
-
-hangman_art.py
-This file contains the ASCII art for the game logo and the different stages of the hangman.
-
-How to Play
-Start the Game: Run the main script to start the game.
-Game Display: The game will display the hangman logo at the start.
-Word to Guess: The game will randomly choose a word from word_list. This word will not be shown to the player.
-Guessing: The player will guess letters one at a time.
-Feedback:
-If the player guesses a letter correctly, it will be revealed in the word.
-If the player guesses a letter that has already been guessed, a message will be displayed.
-If the player guesses incorrectly, a message will be displayed and the player will lose a life.
-End of Game:
-The game will continue until the player either guesses the word or loses all their lives.
-If the player loses all their lives, a "You lose" message will be displayed along with the hangman at its final stage.
-If the player guesses the word, a "You win" message will be displayed.
-Code Walkthrough
-python
-Copiar código
-import random
+# TODO-1: - Update the word list to use the 'word_list' from hangman_words.py
+# Delete this line: word_list = ["ardvark", "baboon", "camel"]
 from hangman_words import word_list
-from hangman_art import logo, stages
 
-# Randomly choose a word from the word list
 chosen_word = random.choice(word_list)
 word_length = len(chosen_word)
 
 end_of_game = False
 lives = 6
 
-# Display the game logo
+# TODO-3: - Import the logo from hangman_art.py and print it at the start of the game.
+from hangman_art import logo
+
 print(logo)
 
-# Debugging: Show the chosen word (can be removed for actual gameplay)
+# Testing code
 print(f'Pssst, the solution is {chosen_word}.')
 
-# Create blanks for the chosen word
-display = ["_" for _ in range(word_length)]
+# Create blanks
+display = []
+for _ in range(word_length):
+    display += "_"
 
 while not end_of_game:
     guess = input("Guess a letter: ").lower()
 
-    # Check if the player has already guessed the letter
+    # TODO-4: - If the user has entered a letter they've already guessed, print the letter and let them know.
     if guess in display:
         print(f"You've already guessed {guess}")
 
-    # Check if the guessed letter is in the chosen word
+    # Check guessed letter
     for position in range(word_length):
         letter = chosen_word[position]
+        # print(f"Current position: {position}\n Current letter: {letter}\n Guessed letter: {guess}")
         if letter == guess:
             display[position] = letter
 
-    # If the guessed letter is not in the chosen word, decrement the lives
+    # Check if user is wrong.
     if guess not in chosen_word:
+        # TODO-5: - If the letter is not in the chosen_word, print out the letter and let them know it's not in the word.
         print(f"You guessed {guess}, that's not in the word. You lose a life.")
+
         lives -= 1
         if lives == 0:
             end_of_game = True
             print("You lose.")
 
-    # Display the current state of the guessed word
+    # Join all the elements in the list and turn it into a String.
     print(f"{' '.join(display)}")
 
-    # Check if the player has guessed the entire word
+    # Check if user has got all letters.
     if "_" not in display:
         end_of_game = True
         print("You win.")
 
-    # Display the current stage of the hangman
+    # TODO-2: - Import the stages from hangman_art.py and make this error go away.
+    from hangman_art import stages
+
     print(stages[lives])
-TODOs
-Update Word List:
+ChatGPT
+markdown
+Copiar código
+# Hangman Game
 
-The word list should be imported from hangman_words.py instead of being defined in the main script.
-Import Stages:
+A simple hangman game implemented in Python.
 
-Import the stages from hangman_art.py at the start of the script.
-Display Logo:
+## Instructions
 
-Import and display the logo from hangman_art.py at the start of the game.
-Repeated Guesses:
+1. Update the word list to use the 'word_list' from `hangman_words.py`.
+2. Import the logo from `hangman_art.py` and print it at the start of the game.
+3. If the user has entered a letter they've already guessed, print the letter and let them know.
+4. If the letter is not in the chosen word, print out the letter and let them know it's not in the word.
+5. Import the stages from `hangman_art.py` and make the error go away.
 
-Implement a check to notify the player if they have already guessed a letter.
-Incorrect Guesses:
+## How to Play
 
-Notify the player if the guessed letter is not in the word.
-Additional Notes
-The debugging print statement showing the solution (print(f'Pssst, the solution is {chosen_word}.')) should be removed or commented out in the final version of the game.
-Ensure that hangman_words.py and hangman_art.py are in the same directory as the main script or update the import statements accordingly.
-Conclusion
-This Hangman game is a fun way to practice Python programming and understand basic game logic. The TODOs listed in the code are simple enhancements that can be made to improve the game experience. Enjoy playing and coding!
+1. A random word is chosen from the word list.
+2. The player has 6 lives initially.
+3. Guess a letter for the word.
+4. If the guessed letter is correct, it will be revealed in the word.
+5. If the guessed letter is incorrect, the player loses a life.
+6. Keep guessing letters until the word is completely revealed or all lives are lost.
+
+## Usage
+
+Run the script and follow the on-screen instructions.
+
+```python
+python hangman.py
+Dependencies
+Python 3.x
+hangman_words.py
+hangman_art.py
+Credits
+This project is based on the Python Hangman project from the "100 Days of Code - The Complete Python Pro Bootcamp for 2021" by Dr. Angela Yu.
